@@ -1,26 +1,21 @@
-import { Inter, Oswald } from "next/font/google";
-import "./globals.css";
+import { JetBrains_Mono } from "next/font/google"
+import "./globals.css"
 
-const inter = Inter({
+const jetbrains = JetBrains_Mono({
   subsets: ["latin"],
-  variable: "--font-inter",
-});
-
-const oswald = Oswald({
-  subsets: ["latin"],
-  variable: "--font-oswald",
-});
+  weight: ["400", "500", "600"],
+})
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${oswald.variable} font-sans`}>
+      <body className={jetbrains.className}>
         {children}
       </body>
     </html>
-  );
+  )
 }
