@@ -61,7 +61,7 @@ export default function ParallaxCardGrid(props: any) {
         ...props.style,
         position: "relative",
         width: "100%",
-        maxWidth: "50rem", // further reduced width to naturally squeeze cards
+        maxWidth: "100%", // allows it to fill the parent container correctly
         height: "100%",
         backgroundColor,
         paddingTop: `${responsiveGap}px`,
@@ -293,152 +293,161 @@ function Card({
           }
         }}
       >
-        <div
-          style={{
-            width: "100%",
-            height: "50%",
-            backgroundImage: `url(${cardImage.src})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            position: "relative",
-            backgroundColor: "#1f2937",
-          }}
-          role="img"
-          aria-label={cardImage.alt}
-        >
-          {enableGlare && (
-            <div
-              style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                width: "100%",
-                height: "100%",
-                background: `radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255, 255, 255, ${glareOpacity}) 0%, transparent 50%)`,
-                pointerEvents: "none",
-                transition: "opacity 0.3s ease-out",
-              }}
-            />
-          )}
+        {enableGlare && (
           <div
             style={{
               position: "absolute",
-              top: 12,
-              left: 12,
-              padding: "4px 8px",
-              borderRadius: "6px",
-              backgroundColor: "rgba(10, 10, 15, 0.8)",
-              color: "#00e57f",
-              fontSize: tagFont?.fontSize || "10px",
-              fontFamily: tagFont?.fontFamily,
-              fontWeight: tagFont?.fontWeight || "600",
-              fontStyle: tagFont?.fontStyle,
-              letterSpacing: tagFont?.letterSpacing || "0.05em",
-              lineHeight: tagFont?.lineHeight,
-              border: "1px solid rgba(0,229,127,0.3)"
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              background: `radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255, 255, 255, ${glareOpacity}) 0%, transparent 50%)`,
+              pointerEvents: "none",
+              transition: "opacity 0.3s ease-out",
+              zIndex: 10, // Ensure glare is always on top
             }}
-          >
-            {card.tag}
+          />
+        )}
+        {card.customContent ? (
+          <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column" }}>
+            {card.customContent}
           </div>
-        </div>
-        <div
-          style={{
-            padding: "16px",
-            height: "50%",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-          }}
-        >
-          <div>
-            <h3
+        ) : (
+          <>
+            <div
               style={{
-                margin: "0 0 6px 0",
-                color: textColor,
-                fontSize: titleFont?.fontSize || "18px",
-                fontWeight: titleFont?.fontWeight || "bold",
-                fontStyle: titleFont?.fontStyle,
-                fontFamily: titleFont?.fontFamily,
-                letterSpacing: titleFont?.letterSpacing || "-0.02em",
-                lineHeight: titleFont?.lineHeight,
-                width: "max-content",
-                minWidth: "max-content",
+                width: "100%",
+                height: "50%",
+                backgroundImage: `url(${cardImage.src})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                position: "relative",
+                backgroundColor: "#1f2937",
               }}
+              role="img"
+              aria-label={cardImage.alt}
             >
-              {card.title}
-            </h3>
-            <p
+              <div
+                style={{
+                  position: "absolute",
+                  top: 12,
+                  left: 12,
+                  padding: "4px 8px",
+                  borderRadius: "6px",
+                  backgroundColor: "rgba(10, 10, 15, 0.8)",
+                  color: "#00e57f",
+                  fontSize: tagFont?.fontSize || "10px",
+                  fontFamily: tagFont?.fontFamily,
+                  fontWeight: tagFont?.fontWeight || "600",
+                  fontStyle: tagFont?.fontStyle,
+                  letterSpacing: tagFont?.letterSpacing || "0.05em",
+                  lineHeight: tagFont?.lineHeight,
+                  border: "1px solid rgba(0,229,127,0.3)"
+                }}
+              >
+                {card.tag}
+              </div>
+            </div>
+            <div
               style={{
-                margin: "0 0 10px 0",
-                color: textColor,
-                opacity: 0.6,
-                fontSize: descriptionFont?.fontSize || "13px",
-                fontWeight: descriptionFont?.fontWeight,
-                fontStyle: descriptionFont?.fontStyle,
-                fontFamily: descriptionFont?.fontFamily,
-                letterSpacing: descriptionFont?.letterSpacing,
-                lineHeight: descriptionFont?.lineHeight || "1.4",
-                display: "-webkit-box",
-                WebkitLineClamp: 2,
-                WebkitBoxOrient: "vertical",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-              }}
-            >
-              {card.description}
-            </p>
-          </div>
-          {card.linkLabel && (
-            <button
-              style={{
-                fontSize: linkFont?.fontSize || "13px",
-                fontWeight: linkFont?.fontWeight || "500",
-                fontStyle: linkFont?.fontStyle,
-                fontFamily: linkFont?.fontFamily,
-                letterSpacing: linkFont?.letterSpacing,
-                lineHeight: linkFont?.lineHeight,
-                color: linkTextColor,
-                backgroundColor: "transparent",
-                border: "none",
-                padding: "4px 0px",
-                borderRadius: "6px",
-                cursor: "pointer",
+                padding: "16px",
+                height: "50%",
                 display: "flex",
-                alignItems: "center",
-                gap: "4px",
-                transition: "color 0.2s ease",
-                width: "max-content",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.color = "#ffffff"
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.color = linkTextColor
-              }}
-              onClick={(e) => {
-                e.stopPropagation()
-                if (card.linkUrl && card.linkUrl !== "#") {
-                  try {
-                    if (card.linkUrl.startsWith("http://") || card.linkUrl.startsWith("https://")) {
-                      window.open(card.linkUrl, "_blank", "noopener,noreferrer")
-                    } else if (card.linkUrl.startsWith("/") || card.linkUrl.startsWith("#")) {
-                      window.location.href = card.linkUrl
-                    } else {
-                      window.open(`https://${card.linkUrl}`, "_blank", "noopener,noreferrer")
-                    }
-                  } catch (error) {
-                    console.warn("Failed to navigate to URL:", card.linkUrl)
-                  }
-                }
+                flexDirection: "column",
+                justifyContent: "space-between",
               }}
             >
-              {card.linkLabel}
-              {card.linkIcon && card.linkIcon !== "none" && (
-                <span style={{ fontSize: "14px" }}>{card.linkIcon}</span>
+              <div>
+                <h3
+                  style={{
+                    margin: "0 0 6px 0",
+                    color: textColor,
+                    fontSize: titleFont?.fontSize || "18px",
+                    fontWeight: titleFont?.fontWeight || "bold",
+                    fontStyle: titleFont?.fontStyle,
+                    fontFamily: titleFont?.fontFamily,
+                    letterSpacing: titleFont?.letterSpacing || "-0.02em",
+                    lineHeight: titleFont?.lineHeight,
+                    width: "max-content",
+                    minWidth: "max-content",
+                  }}
+                >
+                  {card.title}
+                </h3>
+                <p
+                  style={{
+                    margin: "0 0 10px 0",
+                    color: textColor,
+                    opacity: 0.6,
+                    fontSize: descriptionFont?.fontSize || "13px",
+                    fontWeight: descriptionFont?.fontWeight,
+                    fontStyle: descriptionFont?.fontStyle,
+                    fontFamily: descriptionFont?.fontFamily,
+                    letterSpacing: descriptionFont?.letterSpacing,
+                    lineHeight: descriptionFont?.lineHeight || "1.4",
+                    display: "-webkit-box",
+                    WebkitLineClamp: 2,
+                    WebkitBoxOrient: "vertical",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  {card.description}
+                </p>
+              </div>
+              {card.linkLabel && (
+                <button
+                  style={{
+                    fontSize: linkFont?.fontSize || "13px",
+                    fontWeight: linkFont?.fontWeight || "500",
+                    fontStyle: linkFont?.fontStyle,
+                    fontFamily: linkFont?.fontFamily,
+                    letterSpacing: linkFont?.letterSpacing,
+                    lineHeight: linkFont?.lineHeight,
+                    color: linkTextColor,
+                    backgroundColor: "transparent",
+                    border: "none",
+                    padding: "4px 0px",
+                    borderRadius: "6px",
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "4px",
+                    transition: "color 0.2s ease",
+                    width: "max-content",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = "#ffffff"
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = linkTextColor
+                  }}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    if (card.linkUrl && card.linkUrl !== "#") {
+                      try {
+                        if (card.linkUrl.startsWith("http://") || card.linkUrl.startsWith("https://")) {
+                          window.open(card.linkUrl, "_blank", "noopener,noreferrer")
+                        } else if (card.linkUrl.startsWith("/") || card.linkUrl.startsWith("#")) {
+                          window.location.href = card.linkUrl
+                        } else {
+                          window.open(`https://${card.linkUrl}`, "_blank", "noopener,noreferrer")
+                        }
+                      } catch (error) {
+                        console.warn("Failed to navigate to URL:", card.linkUrl)
+                      }
+                    }
+                  }}
+                >
+                  {card.linkLabel}
+                  {card.linkIcon && card.linkIcon !== "none" && (
+                    <span style={{ fontSize: "14px" }}>{card.linkIcon}</span>
+                  )}
+                </button>
               )}
-            </button>
-          )}
-        </div>
+            </div>
+          </>
+        )}
       </motion.div>
     </motion.div>
   )
