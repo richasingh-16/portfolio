@@ -2,7 +2,7 @@
 
 import { useEffect, useLayoutEffect, useRef, useState, useContext, createContext } from "react"
 import { motion, useScroll, useSpring, useTransform } from "framer-motion"
-import { Mail, Facebook, Instagram, Youtube, Linkedin, Github, ChevronRight, ChevronDown, GraduationCap, Palette, Activity, Focus, TrendingUp, BarChart2 } from "lucide-react"
+import { Mail, Facebook, Instagram, Youtube, Linkedin, Github, ChevronRight, ChevronDown, GraduationCap, Palette, Activity, Focus, TrendingUp, BarChart2, Hospital } from "lucide-react"
 
 import ParallaxCardGrid from "@/components/ParallaxCardGrid"
 import FluidBackground from "@/components/FluidBackground"
@@ -702,6 +702,16 @@ function HorizontalScroller({ children }: { children: React.ReactNode }) {
 ========================================= */
 
 const projects = [
+  {
+    title: "mediCube-Healthcare Management SaaS",
+    description: "Role-based hospital management system supporting patient management, appointment scheduling, and secure employee authentication using JWT.",
+    tags: ["React", "Express", "PostgreSQL", "Prisma", "JWT"],
+    color: "#06b6d4",
+    href: "https://github.com/richasingh-16/hospital-management-system",
+    year: "2025",
+    category: "FULL-STACK · HEALTHCARE",
+    icon: Hospital,
+  },
   {
     title: "Synapse Medicare",
     description: "A personal healthcare website and comprehensive platform designed to manage patient data, appointments, and medical records securely.",
