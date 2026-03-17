@@ -15,7 +15,7 @@ export default function FluidBackground() {
         WebGLFluid = init
         
         WebGLFluid(canvasRef.current, {
-          IMMEDIATE: true,
+          IMMEDIATE: false,             // disabled initial load splash
           TRIGGER: "hover",
           SIM_RESOLUTION: 128,
           DYE_RESOLUTION: 512,
@@ -83,6 +83,14 @@ export default function FluidBackground() {
     window.addEventListener("touchstart", handleTouchProxyEvent, { passive: false })
     window.addEventListener("touchend", handleTouchProxyEvent)
 
+    // Intercept spacebar before the webgl-fluid library receives it to prevent random splats 
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === " ") {
+        e.stopImmediatePropagation()
+      }
+    }
+    window.addEventListener("keydown", handleKeyDown, { capture: true })
+
     return () => {
       window.removeEventListener("mousemove", handleProxyEvent)
       window.removeEventListener("mousedown", handleProxyEvent)
@@ -91,6 +99,7 @@ export default function FluidBackground() {
       window.removeEventListener("touchmove", handleTouchProxyEvent)
       window.removeEventListener("touchstart", handleTouchProxyEvent)
       window.removeEventListener("touchend", handleTouchProxyEvent)
+      window.removeEventListener("keydown", handleKeyDown, { capture: true })
     }
   }, [])
 
