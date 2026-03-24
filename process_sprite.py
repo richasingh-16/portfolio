@@ -1,9 +1,9 @@
 from PIL import Image
 import os
 
-img_path = r"C:\Users\cbec\.gemini\antigravity\brain\3677f40e-f44e-4c6a-a260-dc0a12a19fb6\walking_sprite_1772479534283.png"
+img_path = "input_sprite.png" # Place your raw sprite here
 if not os.path.exists(img_path):
-    print('image not found')
+    print(f"Error: {img_path} not found. Please place your raw sprite file in the same directory.")
     exit()
 
 img = Image.open(img_path).convert("RGBA")
@@ -18,6 +18,7 @@ for item in datas:
         newData.append(item)
 
 img.putdata(newData)
-img.save(r"C:\Users\cbec\Desktop\portfolio\portfolio\public\walk-cycle.png", "PNG")
+output_path = os.path.join("public", "walk-cycle.png")
+img.save(output_path, "PNG")
 print('Saved transparent sprite to public/walk-cycle.png')
 print('Image width:', img.width, 'Image height:', img.height)

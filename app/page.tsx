@@ -497,6 +497,8 @@ function SocialsSection() {
   ]
 
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle")
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -521,10 +523,21 @@ function SocialsSection() {
         },
         body: JSON.stringify(data),
       })
-      if (res.ok) { setStatus("sent"); form.reset() }
-      else setStatus("error")
-    } catch { setStatus("error") }
+      if (res.ok) {
+        setStatus("sent")
+        setErrorMessage(null)
+        form.reset()
+      } else {
+        const result = await res.json()
+        setStatus("error")
+        setErrorMessage(result.error || "Failed to send message")
+      }
+    } catch {
+      setStatus("error")
+      setErrorMessage("Something went wrong. Please try again.")
+    }
   }
+
 
   return (
     <section id="socials" className="relative z-10 min-h-screen flex flex-col justify-center py-20 md:pl-64">
@@ -635,7 +648,13 @@ function SocialsSection() {
                 {status === "sent" && "✓ message_sent!"}
                 {status === "error" && "✗ try_again()"}
               </button>
+              {errorMessage && (
+                <p className="text-red-400 text-[10px] font-mono mt-1 text-center">
+                  // {errorMessage}
+                </p>
+              )}
               <p className="text-gray-500 text-xs font-mono">// Powered by my secure Next.js server — lands directly in my inbox :)</p>
+
             </form>
           </div>
 

@@ -11,17 +11,22 @@
   "dependencies": {
     "@fontsource/inter": "^5.2.8",
     "@fontsource/oswald": "^5.2.8",
+    "@types/dompurify": "^3.0.5",
     "@types/nodemailer": "^7.0.11",
     "clsx": "^2.1.1",
+    "dompurify": "^3.3.3",
     "framer-motion": "^12.34.4",
     "lucide-react": "^0.576.0",
     "next": "16.1.6",
     "nodemailer": "^8.0.2",
     "ogl": "^1.0.11",
+    "rate-limiter-flexible": "^10.0.1",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "tailwind-merge": "^3.5.0",
-    "webgl-fluid": "^0.3.9"
+    "webgl-fluid": "^0.3.9",
+    "xss": "^1.0.15",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
